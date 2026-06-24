@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api, { apiOrigin } from '../api/axiosConfig';
+import api from '../api/axiosConfig';
 import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function StudentDashboard() {
@@ -215,7 +215,7 @@ export default function StudentDashboard() {
                 className="bg-white/10 backdrop-blur-md pb-4 rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition duration-300"
               >
                 <img
-                  src={`${apiOrigin}${event.bannerPath}`}
+                  src={resolveImageUrl(event.bannerPath)}
                   alt={event.title}
                   className="w-full h-42.5 object-cover"
                 />
