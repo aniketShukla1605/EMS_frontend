@@ -12,18 +12,7 @@ export default function ForgotPassword() {
   
   const sendOtp = async () => {
     try {
-      const response = await fetch(
-        `${apiOrigin}/otp/send`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: email
-          })
-        }
-      );
+      await api.post('/otp/send', { email });
       alert("OTP sent!");
       setStep(2);
     } catch (err) {
@@ -31,22 +20,9 @@ export default function ForgotPassword() {
     }
   };
 
-  
   const verifyOtp = async () => {
     try {
-      const response = await fetch(
-        `${apiOrigin}/otp/verify`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: email,
-            otp: otp
-          })
-        }
-      );
+      await api.post('/otp/verify', { email, otp });
       alert("OTP verified!");
       setStep(3);
     } catch (err) {

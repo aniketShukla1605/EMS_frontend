@@ -25,39 +25,21 @@ export default function Register() {
 
   const sendOtp = async () => {
     try {
-      const response = await fetch(`${apiOrigin}/otp/send`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email })
-      });
-      const text = await response.text();
-      if (response.ok) {
-        alert(text);
-        setOtpSent(true);
-      } else {
-        alert("Failed to send OTP");
-      }
+      const res = await api.post('/otp/send', { email: formData.email });
+      alert(res.data);
+      setOtpSent(true);
     } catch (error) {
-      console.error(error);
+      alert("Failed to send OTP");
     }
   };
 
   const verifyOtp = async () => {
     try {
-      const response = await fetch(`${apiOrigin}/otp/verify?email=${formData.email}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otp: otp })
-      });
-      const text = await response.text();
-      if (response.ok) {
-        alert(text);
-        setEmailVerified(true);
-      } else {
-        alert(text);
-      }
+      const res = await api.post('/otp/verify', { email: formData.email, otp });
+      alert(res.data);
+      setEmailVerified(true);
     } catch (error) {
-      console.error(error);
+      alert("Invalid OTP");
     }
   };
 
