@@ -84,7 +84,7 @@ export default function CreateEvent() {
 
         <div className="flex gap-4 items-center">
           <Link
-            to="/organiser-dashboard"
+            to=".." relative="path"
             className="bg-brand text-darkBg px-4 py-2 rounded-md font-semibold hover:bg-brandHover transition"
           >
             Back
