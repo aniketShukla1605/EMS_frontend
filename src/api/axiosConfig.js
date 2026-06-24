@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const apiBaseUrl = ('https://ems-backend-lr36.onrender.com').replace(/\/+$/, '');
-export const apiOrigin = apiBaseUrl.replace(/\/api$/, '');
+export const apiOrigin = 'https://ems-backend-lr36.onrender.com';
+export const apiBaseUrl = `${apiOrigin}/api`;
 
 const api = axios.create({
     baseURL: apiBaseUrl,
