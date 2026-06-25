@@ -45,6 +45,10 @@ export default function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!emailVerified) {
+      alert("Please verify your email before registering.");
+      return;
+    }
     try {
       await api.post('/auth/register', formData);
       alert("Registration successful! You can now log in.");

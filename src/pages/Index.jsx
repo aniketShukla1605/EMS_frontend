@@ -53,8 +53,8 @@ export default function Index() {
       <footer className="text-center mt-12 p-5 text-[#b3c7d6]">
         <div className="space-y-1">
           <p>© 2025 EventSphere. All rights reserved.</p>
-          <p>📞 <strong>Contact Us:</strong> +91 98765 43210 | 📧 <strong>Email:</strong> support@eventsphere.com</p>
-          <p>📍 Address: 45, Innovation Tower, Indore, Madhya Pradesh, India</p>
+          <p>📧 <strong>Email:</strong> eventspheremanager@gmail.com</p>
+          <p>📍 Address: Indore, Madhya Pradesh, India</p>
         </div>
       </footer>
     </div>
