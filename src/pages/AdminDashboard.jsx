@@ -303,6 +303,12 @@ export default function AdminDashboard() {
             <span className="text-white">{e.eventName}</span>
             <div className="space-x-2">
               <button
+                      onClick={() => viewRegistrations(e.id)}
+                      className="bg-[#80ffdb] text-[#063a2f] px-3 py-1.5 rounded-md font-semibold hover:opacity-90"
+                    >
+                      View
+                    </button>
+              <button
                 onClick={() => {
                   setSelectedEvent(e);
                   setShowEditModal(true);
