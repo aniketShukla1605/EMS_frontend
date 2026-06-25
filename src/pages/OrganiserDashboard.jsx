@@ -108,7 +108,6 @@ export default function OrganiserDashboard() {
     }
   };
 
-  // BUG FIX: use r.id (registrationId) not r.user.id
   const handleApprove = async (registrationId) => {
     await api.put(`/registrations/approve/${registrationId}`);
     viewRegistrations(selectedEventId);

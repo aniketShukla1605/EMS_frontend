@@ -20,11 +20,14 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState('');
   const [type, setType] = useState('GLOBAL');
   const [profilePicture, setProfilePicture] = useState(null);
+  const [totalRegistrations, setTotalRegistrations] = useState(0);
+  const [registrations, setRegistrations] = useState([]);
 
   useEffect(() => {
     fetchAll();
     fetchAnnouncementCount();
     fetchProfile();
+    fetchTotalRegistrations();
   }, []);
 
   const fetchProfile = async () => {
@@ -71,7 +74,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // BUG FIX: FormData (uppercase F) instead of formData
   const handleUpdateEvent = async () => {
     try {
       const formData = new FormData();
@@ -121,6 +123,21 @@ export default function AdminDashboard() {
     navigate('/login');
   };
 
+  const fetchTotalRegistrations = async () => {
+    const res = await api.get('/registrations/organiser-registrations');
+    setTotalRegistrations(res.data.length);
+  };
+
+  const viewRegistrations = async (eventId) => {
+    try {
+      const res = await api.get(`/registrations/event/${eventId}`);
+      setRegistrations(res.data);
+      setSelectedEventId(eventId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const approveRequest = async (id) => {
     await api.put(`/organiser-requests/approve/${id}`);
     fetchAll();
@@ -141,10 +158,21 @@ export default function AdminDashboard() {
     fetchAll();
   };
 
-  // BUG FIX: correct delete path — backend is /api/events/admin/events/{id}
   const deleteEvent = async (id) => {
     await api.delete(`/events/admin/events/${id}`);
     fetchAll();
+  };
+
+  const handleApprove = async (registrationId) => {
+    await api.put(`/registrations/approve/${registrationId}`);
+    viewRegistrations(selectedEventId);
+    fetchPendingCount();
+  };
+
+  const handleReject = async (registrationId) => {
+    await api.put(`/registrations/reject/${registrationId}`);
+    viewRegistrations(selectedEventId);
+    fetchPendingCount();
   };
 
   return (
@@ -292,6 +320,39 @@ export default function AdminDashboard() {
             </div>
           </div>
         ))}
+
+        {registrations.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-brand text-xl mb-3">
+                Registrations: {registrations.length}
+              </h3>
+              {registrations.map((r) => (
+                <div
+                  key={r.id}
+                  className="flex justify-between items-center bg-white/10 p-3 my-2 rounded"
+                >
+                  <span className="text-white">{r.user.username}</span>
+                  <span className="text-[#b3c7d6]">{r.status}</span>
+                  {r.status === 'PENDING' && (
+                    <div className="space-x-2">
+                      <button
+                        onClick={() => handleApprove(r.id)}
+                        className="bg-[#4ea8de] text-[#012a3b] px-3 py-1.5 rounded-md font-semibold hover:opacity-90"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(r.id)}
+                        className="bg-red-400 text-white px-3 py-1.5 rounded-md font-semibold hover:opacity-90"
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
         {/* Edit Modal */}
         {showEditModal && selectedEvent && (
