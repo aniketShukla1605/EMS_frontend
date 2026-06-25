@@ -1,8 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import api from "../api/axiosConfig"; // your axios config
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/axiosConfig";
 
 export default function CreateEvent() {
+  const navigate = useNavigate();
+
+  const role = localStorage.getItem('role');
+  const dashboardPath = role === 'ROLE_ADMIN' ? '/admin-dashboard' : '/organiser-dashboard';
+
   const [formData, setFormData] = useState({
     eventName: "",
     venue: "",
@@ -16,7 +21,6 @@ export default function CreateEvent() {
   const [imagePreview, setImagePreview] = useState(null);
   const [error, setError] = useState("");
 
-  // handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,7 +28,6 @@ export default function CreateEvent() {
     });
   };
 
-  // handle image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -45,7 +48,6 @@ export default function CreateEvent() {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -60,14 +62,14 @@ export default function CreateEvent() {
       data.append("description", formData.description);
       data.append("banner", banner);
 
-      const res = await api.post("/events", data, {
+      await api.post("/events", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
       alert("Event Created Successfully!");
-      console.log(res.data);
+      navigate(dashboardPath);
 
     } catch (err) {
       console.error(err);
@@ -84,7 +86,7 @@ export default function CreateEvent() {
 
         <div className="flex gap-4 items-center">
           <Link
-            to=".." relative="path"
+            to={dashboardPath}
             className="bg-brand text-darkBg px-4 py-2 rounded-md font-semibold hover:bg-brandHover transition"
           >
             Back
