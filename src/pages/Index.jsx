@@ -52,9 +52,9 @@ export default function Index() {
 
       <footer className="text-center mt-12 p-5 text-[#b3c7d6]">
         <div className="space-y-1">
-          <p>© 2025 EventSphere. All rights reserved.</p>
           <p>📧 <strong>Email:</strong> eventspheremanager@gmail.com</p>
           <p>📍 Address: Indore, Madhya Pradesh, India</p>
+          <p>© 2025 EventSphere. All rights reserved.</p>
         </div>
       </footer>
     </div>
