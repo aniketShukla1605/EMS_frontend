@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api, { apiOrigin } from "../api/axiosConfig";
 
 export default function ForgotPassword() {
@@ -8,6 +9,8 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const navigate = useNavigate();
 
   
   const sendOtp = async () => {
@@ -39,10 +42,10 @@ export default function ForgotPassword() {
       });
 
       alert("Password updated!");
-      setStep(1);
-      
+      navigate("/login");
     } catch (err) {
       alert("Error updating password");
+      setStep(1); //Reset to step 1 on error
     }
   };
 
