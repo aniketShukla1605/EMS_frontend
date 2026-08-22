@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axiosConfig';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -39,25 +40,43 @@ export default function Login() {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await api.post('/auth/google', {
+        idToken: credentialResponse.credential,
+      });
+      const { token, role } = res.data;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+
+      if (role === 'ROLE_ADMIN') navigate('/admin-dashboard');
+      else if (role === 'ROLE_ORGANISER') navigate('/organiser-dashboard');
+      else navigate('/student-dashboard');
+    } catch (err) {
+      alert('Google login failed');
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="bg-white/10 p-10 rounded-xl w-[90%] max-w-[380px] text-center shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
         <h2 className="text-brand text-2xl mb-5 font-semibold">Login to EventSphere</h2>
         <form onSubmit={handleLogin}>
-          <input 
+          <input
             type="email"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)} 
-            placeholder="Email" 
-            required 
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
             className="w-full p-4 my-2 border-none rounded-md bg-white/15 text-white outline-none placeholder-[#cfd9e2] text-base"
           />
-          <input 
-            type="password" 
+          <input
+            type="password"
             value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-            placeholder="Password" 
-            required 
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
             className="w-full p-4 my-2 border-none rounded-md bg-white/15 text-white outline-none placeholder-[#cfd9e2] text-base"
           />
           {/* <select className="w-full p-4 my-2 border-none rounded-md bg-white/15 text-white outline-none text-base [&>option]:bg-[#536769]">
@@ -72,6 +91,12 @@ export default function Login() {
             Login
           </button>
         </form>
+        <div className="mt-4 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => alert('Google Login Failed')}
+          >login with Google</GoogleLogin>
+        </div>
         <p className="mt-4 text-white">
           Don't have an account? <Link to="/register" className="text-brand no-underline hover:underline">Register</Link>
         </p>

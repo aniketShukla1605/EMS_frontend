@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const apiOrigin = 'https://ems-backend-lr36.onrender.com';
+export const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 export const apiBaseUrl = `${apiOrigin}/api`;
 
 const api = axios.create({
